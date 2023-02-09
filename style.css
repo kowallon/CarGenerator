@@ -1,0 +1,125 @@
+/* *{
+     box-sizing: border-box; 
+} */
+
+:root{
+    --line-color : #3498db;
+    --width: 10% 
+}
+
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: rgb(233, 231, 231);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-size: 1.5rem;
+}
+
+.container{
+    text-align: center;
+}
+
+.progress-container{
+    display: flex;
+    align-items: center;
+    margin: 5px auto;  
+    position: relative;
+    width:350px;
+    justify-content: space-between;
+}
+
+.progress-container::before{
+    content: "";
+    background-color: #aaaa;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    z-index: -1;
+}
+
+
+.progress{
+    background-color: var(--line-color);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 4px;
+    z-index: -1;
+    transition: 1s ease;
+}
+
+.circle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: rgb(233, 231, 231);
+    border: solid 3px #aaaaaa;
+    height: 40px;
+    width: 40px;
+    border-radius: 100%;
+    transition: 1s ease;
+}
+
+.circle.active{
+    border-color: var(--line-color)
+}
+
+button{
+    background-color: var(--line-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+button:active{
+    transform: scale(0.92);
+}
+
+button:disabled{
+    background-color: gray;
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/*form*/
+.form{
+    margin: 40px auto;
+}
+
+.details{
+    text-align: left
+}
+
+.details input, .details p{
+    margin-left: 30%;
+}
+
+.singleColor{
+    display: flex;
+}
+
+.colorBox {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+@media (max-width: 400px) {
+
+    img{
+        max-width: 350px;
+    }
+    
+}
+

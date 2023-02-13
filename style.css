@@ -91,6 +91,10 @@ button:disabled{
     cursor: not-allowed;
 }
 
+.hidden{
+    display: none;
+}
+
 /*form*/
 .form{
     margin: 40px auto;
@@ -104,16 +108,6 @@ button:disabled{
     margin-left: 30%;
 }
 
-.singleColor{
-    display: flex;
-}
-
-.colorBox {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    margin-left: 10px;
-}
 
 @media (max-width: 400px) {
 
@@ -122,4 +116,3 @@ button:disabled{
     }
     
 }
-

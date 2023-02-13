@@ -4,9 +4,14 @@ const prevBtn = document.getElementById("prev")
 const circles = document.querySelectorAll(".circle")
 const progess = document.getElementById("progress")
 const form = document.getElementById("form")
+const select = document.getElementById("select")
+const label = document.getElementById("label")
+const carDiv = document.getElementById("carDiv")
 let make
 let model
 let color
+
+
 
 let currentActive = 0
 
@@ -23,10 +28,10 @@ nextBtn.addEventListener("click", function(){
         make = document.getElementById("select").value
     }
     if(currentActive == 1){
-        model = document.querySelector('input[name="model"]:checked').value;
+        model = document.getElementById("select").value;
     }
     if(currentActive == 2){
-        color = document.querySelector('input[name="carcolor"]:checked').value;
+        color = document.getElementById("select").value;
         console.log(color)
     }
     currentActive += 1
@@ -54,135 +59,59 @@ prevBtn.addEventListener("click", function(){
         if(currentActive < 1){
             prevBtn.disabled = true
         }
-        renderQuestions()
+        if(currentActive === 2){
+            form.classList.remove("hidden")
+            carDiv.innerHTML = ""
+        }
+            renderQuestions()
+        
     }) 
 
 
 function renderQuestions(){
+    
     if(currentActive == 0){
-    form.innerHTML = `<label for="select">Select car: </label>
-    <select name="select" id="select">
-        <option value="toyota">Toyota</option>
-        <option value="tesla">Tesla</option>
-    </select>`
-
+        label.textContent = "Select make: "
+        select.innerHTML = ''
+        fetch("https://cdn.imagin.studio/getCarListing?customer=plmateuszkowalczykcompany")
+        .then(res => res.json())
+        .then(data => {
+            data.make.map(function(carMake){
+                select.innerHTML += `<option value="${carMake}">${carMake.toUpperCase()}</option>`
+            })
+        })
     } 
-    else if(currentActive == 1 && make == "toyota"){
-        form.innerHTML = `<form class="details">
-        <p>Select model:</p>
-        <input type="radio" name="model" value="supra">
-        <label for="tra1">Supra</label><br>
-
-        <input type="radio" name="model" value="landcruiser">
-        <label for="tra1">Landcruiser</label><br>
-
-        <input type="radio" name="model" value="mirai">
-        <label for="tra1">Mirai</label><br>
-    </form>`
+    else if(currentActive == 1){
+        label.textContent = "Select model: "
+        select.innerHTML = ''
+        fetch(`https://cdn.imagin.studio/getCarListing?customer=plmateuszkowalczykcompany&make=${make}`)
+            .then(res => res.json())
+            .then(data =>{
+                data.modelFamily.map(function(carModel){
+                    select.innerHTML += `<option value="${carModel}">${carModel.toUpperCase()}</option>`                    
+                })
+            })
     } 
-    else if(currentActive == 1 && make == "tesla"){
-        form.innerHTML = `<form class="details">
-        <p>Select model:</p>
-        <input type="radio" name="model" value="model3">
-        <label for="tra1">Model 3</label><br>
+    else if (currentActive == 2){
 
-        <input type="radio" name="model" value="roadster">
-        <label for="tra1">Roadster</label><br>
+        label.textContent = "Select color: "
+        select.innerHTML = `
+        <option name="carcolor" value="pspc0064"><div class="colorBox" style="background-color: black;">black<i class="fa-regular fa-square" style="background-color: black;"></i></option>
 
-        <input type="radio" name="model" value="modely">
-        <label for="tra1">Model y</label><br>
-    </form>`
-    } else if (currentActive == 2 && model != "landcruiser" && model != "roadster"){
-        form.innerHTML = `<form class="details">
-        <p>Select color:</p>
-        <div class="singleColor">
-        <input type="radio" name="carcolor" value="pspc0064"><div class="colorBox" style="background-color: black;"></div>
-        </div><br>
+        <option name="carcolor" value="pspc0039"><div class="colorBox" style="background-color: white;">white</option>
 
-        <div class="singleColor">
-            <input type="radio" name="carcolor" value="pspc0039"><div class="colorBox" style="background-color: white;"></div>
-        </div><br>
-
-        <div class="singleColor">
-            <input type="radio" name="carcolor" value="pspc0007"><div class="colorBox" style="background-color: blue;"></div>
-        </div><br>    
-    </form>`
-    }
-    else if (currentActive == 2 && model === "landcruiser"){
-        form.innerHTML = `<form class="details">
-        <p>Select color:</p>
-        <div class="singleColor">
-        <input type="radio" name="carcolor" value="pspc0064"><div class="colorBox" style="background-color: black;"></div>
-        </div><br>
-
-        <div class="singleColor">
-            <input type="radio" name="carcolor" value="pspc0003"><div class="colorBox" style="background-color: #9a8f7a;"></div>
-        </div><br>
-
-        <div class="singleColor">
-            <input type="radio" name="carcolor" value="pspc0010sspc0041"><div class="colorBox" style="background-color: silver;"></div>
-        </div><br>    
-    </form>`
-    }
-    else if (currentActive == 2 && model === "roadster"){
-        form.innerHTML = `<form class="details">
-        <p>Select color:</p>
-        <div class="singleColor">
-        <input type="radio" name="carcolor" value="pspc0064"><div class="colorBox" style="background-color: black;"></div>
-        </div><br>
-
-        <div class="singleColor">
-            <input type="radio" name="carcolor" value="pspc0034"><div class="colorBox" style="background-color: #f75e5e;"></div>
-        </div><br>
-
-        <div class="singleColor">
-            <input type="radio" name="carcolor" value="pspc0010sspc0041"><div class="colorBox" style="background-color: silver;"></div>
-        </div><br>    
-    </form>`
+        <option name="carcolor" value="pspc0007"><div class="colorBox" style="background-color: blue;">blue</option>`
     }
     else if(currentActive == 3){
+        form.classList.add("hidden")
         fetch(`https://cdn-01.imagin.studio/getImage?customer=plmateuszkowalczykcompany&make=${make}&modelFamily=${model}&paintId=${color}`)
             .then(img => {
                 console.log(img)
                 // document.getElementById("container").innerHTML =  ``
-                form.innerHTML = `<img class="carImg" src="${img.url}"> `
+                carDiv.innerHTML = `<img class="carImg" src="${img.url}"> `
             })
             
     }
 }
 
-
-
-
-
-// Response {type: 'cors', url: 'https://cdn.imagin.studio/getImage?customer=plmateuszkowalczykcompany&?make=toyota?modelFamily=supra', redirected: false, status: 200, ok: true, …}
-// body
-// : 
-// (...)
-// bodyUsed
-// : 
-// false
-// headers
-// : 
-// Headers {}
-// ok
-// : 
-// true
-// redirected
-// : 
-// false
-// status
-// : 
-// 200
-// statusText
-// : 
-// ""
-// type
-// : 
-// "cors"
-// url
-// : 
-// "https://cdn.imagin.studio/getImage?customer=plmateuszkowalczykcompany&?make=toyota?modelFamily=supra"
-// [[Prototype]]
-// : 
-// Response
+renderQuestions()
